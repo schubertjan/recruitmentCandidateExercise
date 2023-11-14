@@ -8,7 +8,7 @@ $$Adstock_{t} = S_{t} + [RF * Adstock_{t-1}]$$
 
 here $t$ is a determine week, $S$ is the spend in USD and $RF \in [0,1]$ is the Retention Factor describing the proportion of the media pressure that is carried over from week to week.
 
-The retention factor measures how much of the publicity is retained in time. A higher retention factor means a lower decay rate, which measures the sales decline after each exposure to advertising. A higher decay rate means that the sales drop more quickly, while a lower decay rate means that the sales drop more slowly. 
+The retention factor measures how much of the publicity is retained in time. A higher retention factor means a higher decay rate, which measures the sales decline after each exposure to advertising. A higher decay rate means that the sales drop more quickly, while a lower decay rate means that the sales drop more slowly. 
 
 The model can be used to estimate the impact of advertising on searches in linear model, such as regression. However, this model has some limitations, such as ignoring the nonlinear effects of advertising exposure, assuming constant exposure rates, and not accounting for other factors that may affect sales, such as price or competition.
 
