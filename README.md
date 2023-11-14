@@ -1,24 +1,54 @@
-# Recruitment Candidate Exercise
-Exercise for Solutions Analytics Director role
+# Documentation - Kantar Recruitment Exercise - Luisa Márquez Rentería
 
-This exercise aims to gain an understanding of how a brand’s advertising spend has influenced the levels of weekly Google Search volumes that were made for the brand in a particular country.
+## 1. Introducción
 
-In this case, the advertising has specifically intended to increase in Search volumes and over time three different (non-overlapping) advertising campaigns have been used.
+The Simple Decay Model is a way of transforming the sales response of a product or service to account for the advertising carryover effect. This effect means that the exposure to advertising builds up over time and increases the awareness and preference of consumers. The formula is 
 
-Data for the weekly Search volumes; the advertising spend; and where the three different campaigns take place are available.
+$$Adstock_{t} = S_{t} + [RF * Adstock_{t-1}]$$
 
-The task is to create two different modelling approaches for the data with Search Volume as the dependent. The aim is use the media spend to gain an understanding of which of the campaigns appear to have more effectively and efficiently generated additional Search volumes.
+here $t$ is a determine week, $S$ is the spend in USD and $RF \in [0,1]$ is the Retention Factor describing the proportion of the media pressure that is carried over from week to week.
 
-Because the media/advertising spend will have an impact in the week in which it takes place and a decaying effect in future weeks, it is necessary to represent the media spend in the model in the form of a 'recent advertising pressure' measure. This type of measure with media spend is called an Adstock; and it is in this form that the advertising should be used as an independent variable in the model. The Adstock calculation takes the form:
+The retention factor measures how much of the publicity is retained in time. A higher retention factor means a lower decay rate, which measures the sales decline after each exposure to advertising. A higher decay rate means that the sales drop more quickly, while a lower decay rate means that the sales drop more slowly. 
 
-Adstock (in week n) = Media Spend (in week n) + [ RF x Adstock (in week n-1) ]
+The model can be used to estimate the impact of advertising on searches in linear model, such as regression. However, this model has some limitations, such as ignoring the nonlinear effects of advertising exposure, assuming constant exposure rates, and not accounting for other factors that may affect sales, such as price or competition.
 
-The RF is the Retention Factor [0,1] describing the proportion of the media pressure the is carried over from week to week.
+## 2. Model
 
-Results for the two modelled approaches should be delivered as a Shiny App.
+The aim is to gain an understanding of how a brand’s advertising spend has influenced the levels of weekly Google Search volumes. The advertising has specifically intended to increase in Search volumes and over time three different (non-overlapping) advertising campaigns have been used. 
+ 
+First, an exploratory analysis that review the spend per dollar has been done to the data.
 
-There should be a slider to allow the viewer to alter the value of the RF (in increments of 0.1); and as well as a chart showing the model fit, there should also be a table that reports the efficiencies for the three campaigns.
+Secondly, the Simple Decay Model is applied per campaign to get the adstock per week. In this step, the adstock model is compared with media spend for different retention factors.
 
-The models don’t need to be complicated and the Shiny app UI should be simple. Templated Shiny UI is enough. We expect that each model will use its own function with appropriate documentation and that the code will be pushed to your Github repository. We expect to see at least two commits. Along with pushing your code to Github, you should deploy your Shiny app on the Shiny server (using a free account https://www.shinyapps.io/).
+Then, to estimate the impact of advertising on searches, the $lm$ function in R is used. This is a tool for fitting linear models. It can be used to perform various types of regression analysis, such as simple, multiple, logistic, or generalized linear models. The $lm$ function has the basic syntax:
 
-The data for the exercise are available here https://github.com/schubertjan/recruitmentCandidateExercise. You are expected to fork the repository into your own Github account and make any code commits in this forked repository.
+
+$$lm(formula, data,...)$$
+
+Where:
+
+(-) formula: A symbolic description of the model to be fitted. It can include one or more predictor variables and a response variable. For example: $y \thicksim x1+x2+x3$
+
+(-) data: An optional data frame that contains the variable in the model. If not specified, the variables are taken from the environment where the $lm$ function is called.
+
+With Adstock as independent variable and Search Volume as a dependent variable, the $lm$ model took the form:
+
+$$lm(Search Volume \thicksim Adstock, data = campaing)$$
+
+Which is applied per campaign. 
+ 
+## 3. Shiny
+
+This shiny uses a .csv file directly on top of the code. It is not necessary to upload any files to shiny.
+
+### 3.1 Slider
+
+At the top of the page there is a slider that goes from 0 to 1, whose function is to modify the retention factor. This will modify the adstock model and, in consequence, the serch volume model.
+
+### 3.2 Results
+
+First there is a graph with title "Search Volume Model Fit" that compares the original Search Volume with the predicted Search Volume, besides it there is a table with the values of intercept, slop and R squared for each campaign. 
+
+Then, to visualize the adstock motdel, is the Decay Rate graph and the Adstock Model / Spend graph.
+
+Finally, there is a graph and table to see the searches per dollar and campaign.
